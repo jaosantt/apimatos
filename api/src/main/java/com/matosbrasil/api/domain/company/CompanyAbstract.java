@@ -1,5 +1,6 @@
 package com.matosbrasil.api.domain.company;
 
+import java.sql.Date;
 import java.util.UUID;
 
 import com.matosbrasil.api.domain.enums.TypeCompany;
@@ -33,6 +34,7 @@ public class CompanyAbstract {
 	private String      municipalRegistration; // Inscrição Municipal
 	private String      phone;                 // Telefone
 	private String      email;				   // E-mail
+	private Date        dateCreated; 		   // Data Cadastro
 	
 	@OneToOne
     @JoinColumn(name = "cadempendereco")
