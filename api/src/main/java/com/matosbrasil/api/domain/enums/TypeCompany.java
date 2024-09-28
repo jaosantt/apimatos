@@ -1,4 +1,4 @@
-package domain.company.enums;
+package com.matosbrasil.api.domain.enums;
 
 public enum TypeCompany {
 	CLIENT,          // CLIENTE

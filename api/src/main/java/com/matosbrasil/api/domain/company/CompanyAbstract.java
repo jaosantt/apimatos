@@ -1,8 +1,9 @@
-package domain.company;
+package com.matosbrasil.api.domain.company;
 
 import java.util.UUID;
 
-import domain.company.enums.TypeCompany;
+import com.matosbrasil.api.domain.enums.TypeCompany;
+
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;

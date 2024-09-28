@@ -1,6 +1,7 @@
-package domain.company;
+package com.matosbrasil.api.domain.company;
 
-import domain.company.enums.TypeShipping;
+import com.matosbrasil.api.domain.enums.TypeShipping;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

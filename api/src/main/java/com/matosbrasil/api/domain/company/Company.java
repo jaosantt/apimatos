@@ -1,4 +1,4 @@
-package domain.company;
+package com.matosbrasil.api.domain.company;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
