@@ -15,6 +15,8 @@ public class CompanyService {
 	
 	@Autowired
 	private CompanyRepository repository;
+	@Autowired
+	private AddressService addressService;
 	
 	public Company createCompany(CompanyRequestDTO data) {
 		
@@ -29,15 +31,7 @@ public class CompanyService {
 		company.setType(data.type());
 		company.setDateCreated(new Date());
 		
-		Address address = new Address();
-		address.setPlace(data.address().place());
-		address.setNumber(data.address().number());
-		address.setComplement(data.address().complement());
-		address.setCep(data.address().cep());
-		address.setDistrict(data.address().district());
-		address.setCity(data.address().city());
-		address.setUf(data.address().uf());
-		address.setDateCreated(new Date());
+		Address address = addressService.createAddress(data.address());
 		
 		company.setAddress(address);
 		repository.save(company);
