@@ -1,7 +1,9 @@
 package com.matosbrasil.api.domain.company;
 
+import java.util.Date;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "cadempresa")
+@Table(name = "cadendereco")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,12 +22,30 @@ import lombok.Setter;
 public class Address {
 	@Id
 	@GeneratedValue
+    @Column(name = "cadendid")
 	private UUID    id;           // ID do Endereço	
-	private String  place;        // Logradouro
-	private String  number;       // Número do Endereço
-	private String  complement;   // Complemento
-	private String  cep;          // CEP
-	private String  district;     // Bairro
-	private String  city;         // Cidade
-	private String  uf;           // Estado
+
+    @Column(name = "cadendlogradouro")
+    private String place; // Logradouro
+
+    @Column(name = "cadendnumero")
+    private String number; // Número do Endereço
+
+    @Column(name = "cadendcomplemento")
+    private String complement; // Complemento
+
+    @Column(name = "cadendcep")
+    private String cep; // CEP
+
+    @Column(name = "cadendbairro")
+    private String district; // Bairro
+
+    @Column(name = "cadendmunicipio")
+    private String city; // Cidade
+
+    @Column(name = "cadenduf")
+    private String uf; // Estado
+    
+	@Column(name = "cadenddtcadastro")
+	private Date dateCreated; // Data Cadastro
 }
