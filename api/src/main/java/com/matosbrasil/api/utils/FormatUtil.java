@@ -1,0 +1,80 @@
+package com.matosbrasil.api.utils;
+
+import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.Map;
+
+public class FormatUtil {
+	private static final Map<String, String> STATES = new HashMap<>();
+
+    static {
+    	/**
+    	 * Mapeamento dos estados
+    	 */
+        STATES.put("AC", "Acre");
+        STATES.put("AL", "Alagoas");
+        STATES.put("AP", "Amapá");
+        STATES.put("AM", "Amazonas");
+        STATES.put("BA", "Bahia");
+        STATES.put("CE", "Ceará");
+        STATES.put("DF", "Federal District");
+        STATES.put("ES", "Espírito Santo");
+        STATES.put("GO", "Goiás");
+        STATES.put("MA", "Maranhão");
+        STATES.put("MT", "Mato Grosso");
+        STATES.put("MS", "Mato Grosso do Sul");
+        STATES.put("MG", "Minas Gerais");
+        STATES.put("PA", "Pará");
+        STATES.put("PB", "Paraíba");
+        STATES.put("PR", "Paraná");
+        STATES.put("PE", "Pernambuco");
+        STATES.put("PI", "Piauí");
+        STATES.put("RJ", "Rio de Janeiro");
+        STATES.put("RN", "Rio Grande do Norte");
+        STATES.put("RS", "Rio Grande do Sul");
+        STATES.put("RO", "Rondônia");
+        STATES.put("RR", "Roraima");
+        STATES.put("SC", "Santa Catarina");
+        STATES.put("SP", "São Paulo");
+        STATES.put("SE", "Sergipe");
+        STATES.put("TO", "Tocantins");
+    }
+    /**
+     * Funcao responsavel por remover os caracteres especiais
+     * @param input entrada dos dados
+     * @return
+     */
+    private static String normalize(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                         .replaceAll("\\p{M}", "");
+    }
+    /**
+     * Funcao responsavel por traduzir a sigla para o nome do estado
+     * @param abbreviation
+     * @return
+     */
+    public static String getUFFullName(String abbreviation) {
+        return STATES.getOrDefault(abbreviation.toUpperCase(), "Estado não encontrado");
+    }
+    /**
+     * Funcao responsavel por traduzir o nome para a sigla do estado
+     * @param fullName
+     * @return
+     */
+    public static String getUFAbbreviation(String fullName) {
+        String normalizedFullName = normalize(fullName);
+        for (Map.Entry<String, String> entry : STATES.entrySet()) {
+            if (normalize(entry.getValue()).equalsIgnoreCase(normalizedFullName)) {
+                return entry.getKey();
+            }
+        }
+        return "Sigla não encontrada";
+    }
+    /**
+     * Pega o mapeamento dos estados
+     * @return map dos estados (siglas, nomes)
+     */
+    public static Map<String, String> getStatesMap() {
+    	return STATES;
+    }
+}
