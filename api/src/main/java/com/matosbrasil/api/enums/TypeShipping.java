@@ -1,4 +1,4 @@
-package com.matosbrasil.api.domain.enums;
+package com.matosbrasil.api.enums;
 
 public enum TypeShipping {
 	AUTONOMOUS,        // Autonômo (TAC)
