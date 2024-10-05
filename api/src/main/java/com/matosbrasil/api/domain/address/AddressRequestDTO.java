@@ -1,4 +1,4 @@
-package com.matosbrasil.api.domain.company;
+package com.matosbrasil.api.domain.address;
 
 public record AddressRequestDTO(
 		String place,

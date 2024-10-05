@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
-import com.matosbrasil.api.domain.company.Address;
-import com.matosbrasil.api.domain.company.AddressRequestDTO;
+import com.matosbrasil.api.domain.address.Address;
+import com.matosbrasil.api.domain.address.AddressRequestDTO;
 
 @Service
 public class AddressService {
