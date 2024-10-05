@@ -1,5 +1,6 @@
 package com.matosbrasil.api.domain.company;
 
+import com.matosbrasil.api.domain.address.AddressRequestDTO;
 import com.matosbrasil.api.domain.enums.TypeCompany;
 
 public record CompanyRequestDTO(
