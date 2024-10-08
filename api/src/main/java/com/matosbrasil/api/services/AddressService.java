@@ -26,14 +26,14 @@ public class AddressService {
 		address.setNumber(data.number());
 		address.setComplement(data.complement());
 		address.setCep(data.cep());
-		if(validatorUtil.isNumeric(address.getCep())){
+		if(!validatorUtil.isNumeric(address.getCep()) || address.getCep().length() != 8){
 			throw new CompanyException("O CEP está incorreto");
 		}
 		
 		address.setDistrict(data.district());
 		address.setCity(data.city());
 		address.setUf(data.uf().length() != 2 ? FormatUtil.getUFAbbreviation(data.uf()) : data.uf());
-		if(address.isValidUf()) {
+		if(!address.isValidUf()) {
 			throw new CompanyException("O UF está errado");
 		}
 		address.setDateCreated(new Date());

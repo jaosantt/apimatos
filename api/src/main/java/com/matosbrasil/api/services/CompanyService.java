@@ -39,17 +39,17 @@ public class CompanyService {
 			company.setName(data.name());
 			company.setFantasyName(data.fantasyName());
 			company.setStateRegistration(data.stateRegistration());
-			if(validatorUtil.isNumeric(company.getStateRegistration())){
+			if(!validatorUtil.isNumeric(company.getStateRegistration())){
 				throw new CompanyException("A Inscrição Estadual nâo é válida");
 			}
 			
 			company.setMunicipalRegistration(data.municipalRegistration());
-			if(validatorUtil.isNumeric(company.getMunicipalRegistration())) {
+			if(!validatorUtil.isNumeric(company.getMunicipalRegistration())) {
 				throw new CompanyException("A Inscrição Municipal nâo é válida");
 			}
 			
 			company.setPhone(data.phone());
-			if(validatorUtil.isNumeric(company.getPhone())){
+			if(!validatorUtil.isNumeric(company.getPhone())){
 				throw new CompanyException("O número de telefone e inválido");
 			}
 			
