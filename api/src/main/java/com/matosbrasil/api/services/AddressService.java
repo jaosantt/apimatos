@@ -22,20 +22,27 @@ public class AddressService {
 	public Address createAddress(AddressRequestDTO data){
 		
 		Address address = new Address();
+		
 		address.setPlace(data.place());
 		address.setNumber(data.number());
 		address.setComplement(data.complement());
-		address.setCep(data.cep());
+		
+		// Valida o CEP informado
+		address.setCep(FormatUtil.formatNumber(data.cep()));
 		if(!validatorUtil.isNumeric(address.getCep()) || address.getCep().length() != 8){
 			throw new CompanyException("O CEP está incorreto");
 		}
 		
 		address.setDistrict(data.district());
 		address.setCity(data.city());
+		
+		// Valida o estado informado
 		address.setUf(data.uf().length() != 2 ? FormatUtil.getUFAbbreviation(data.uf()) : data.uf());
-		if(!address.isValidUf()) {
-			throw new CompanyException("O UF está errado");
+		if(!validatorUtil.isValidAbbreviationUf(address.getUf())) {
+			throw new CompanyException("O UF informado é inválido.");
 		}
+		
+		// Preenche a data de cadastro
 		address.setDateCreated(new Date());
 		
 		return address;

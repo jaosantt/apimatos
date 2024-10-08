@@ -39,14 +39,41 @@ public class FormatUtil {
         STATES.put("SE", "Sergipe");
         STATES.put("TO", "Tocantins");
     }
+    
     /**
-     * Funcao responsavel por remover os caracteres especiais
+     * Funcao responsavel por remover normalizar os caracteres
      * @param input entrada dos dados
      * @return
      */
     private static String normalize(String input) {
         return Normalizer.normalize(input, Normalizer.Form.NFD)
                          .replaceAll("\\p{M}", "");
+    }
+    
+    /**
+     * Função responsável por remover os caracteres especiais
+     * @param input A entrada de dados que terá os caracteres especiais removidos
+     * @return
+     */
+    public static String removeSpecialCharacters(String input) {
+    	return input != null ? input.replaceAll("[^a-zA-Z0-9]", "") : null;
+    }
+    
+    /**
+     * @param number o Número que será formatado
+     * @return
+     */
+    public static String formatNumber(String number) {
+    	return number != null ? number.replaceAll("[^0-9]", "") : null;
+    }
+    
+    /**
+     * Função responsável por remover os caracteres especiais do CPF ou do CNPJ
+     * @param document O documento informado
+     * @return
+     */
+    public static String formatCPForCNPJ(String document) {
+    	return document != null ? document.replaceAll("[^\\d]", "") : null; 
     }
     /**
      * Funcao responsavel por traduzir a sigla para o nome do estado

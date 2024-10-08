@@ -2,11 +2,6 @@ package com.matosbrasil.api.domain.address;
 
 import java.util.Date;
 import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.matosbrasil.api.utils.ValidatorUtil;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,9 +19,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
-	@Autowired
-	private ValidatorUtil validatorUtil;
-	
 	@Id
 	@GeneratedValue
     @Column(name = "cadendid")
@@ -55,12 +47,4 @@ public class Address {
     
 	@Column(name = "cadenddtcadastro")
 	private Date dateCreated; // Data Cadastro
-	
-	/**
-	 * Funcao responsavel para validacao dos UF
-	 * @return true se a UF for valida e False se nao for
-	 */
-	public boolean isValidUf() {
-		return validatorUtil.isValidAbbreviationUf(this.getUf());
-	}
 }
