@@ -22,7 +22,7 @@ public class CompanyService {
 	@Autowired
 	private AddressService addressService;
 	
-	public Company createCompany(CompanyRequestDTO data) {
+	public void createCompany(CompanyRequestDTO data) {
 		
 		try {
 			Company company = new Company();
@@ -96,8 +96,6 @@ public class CompanyService {
 			
 			// Salva no banco de dados
 			repository.save(company);
-			
-			return company;
 		} catch (CompanyException companyEx) {
 			throw companyEx;
 		} catch (Exception ex) {
