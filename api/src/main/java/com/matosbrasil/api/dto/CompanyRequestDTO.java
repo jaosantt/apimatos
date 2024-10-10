@@ -1,8 +1,6 @@
-package com.matosbrasil.api.domain.company;
+package com.matosbrasil.api.dto;
 
-import com.matosbrasil.api.domain.address.AddressRequestDTO;
-import com.matosbrasil.api.domain.enums.TypeCompany;
-
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -17,9 +15,9 @@ public record CompanyRequestDTO(
 		String phone,
 		@Email(message = "O E-mail fornecido não e válido")
 		String email, 
-		@NotBlank(message = "O tipo não foi informado")
-		TypeCompany type,
-		@NotBlank(message = "O endereço não foi informado")
+		@NotBlank(message = "É obrigatório informar o tipo da empresa.")
+		String type,
+		@Valid
 		AddressRequestDTO address
 ) {
 

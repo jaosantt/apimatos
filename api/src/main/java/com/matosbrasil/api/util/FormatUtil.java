@@ -1,4 +1,4 @@
-package com.matosbrasil.api.utils;
+package com.matosbrasil.api.util;
 
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -56,15 +56,30 @@ public class FormatUtil {
      * @return
      */
     public static String removeSpecialCharacters(String input) {
-    	return input != null ? input.replaceAll("[^a-zA-Z0-9]", "") : null;
+        if (input == null || input.isEmpty() || input.isBlank()) {
+            return null;
+        }
+
+        // 1. Remover acentos usando Normalizer
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        String withoutAccents = normalized.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+        // 2. Remover caracteres especiais, mantendo letras, números e espaços
+        return withoutAccents.replaceAll("[^a-zA-Z0-9\\s]", "");
     }
-    
     /**
      * @param number o Número que será formatado
      * @return
      */
     public static String formatNumber(String number) {
-    	return number != null ? number.replaceAll("[^0-9]", "") : null;
+    	
+    	if (ValidatorUtil.isEmptyOrNullOrBlank(number)) {
+    		return null;
+    	}
+    	
+    	number = number.replaceAll("[^0-9]", "");
+    	
+    	return !ValidatorUtil.isEmptyOrNullOrBlank(number) ? number : null;
     }
     
     /**
@@ -104,4 +119,5 @@ public class FormatUtil {
     public static Map<String, String> getStatesMap() {
     	return STATES;
     }
+    
 }

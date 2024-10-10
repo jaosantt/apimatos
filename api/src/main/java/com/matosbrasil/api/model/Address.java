@@ -1,4 +1,4 @@
-package com.matosbrasil.api.domain.address;
+package com.matosbrasil.api.model;
 
 import java.util.Date;
 import java.util.UUID;

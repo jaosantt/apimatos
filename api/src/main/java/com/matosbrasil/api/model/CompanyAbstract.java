@@ -1,8 +1,10 @@
-package com.matosbrasil.api.domain.company;
+package com.matosbrasil.api.model;
 
 import java.util.Date;
 import java.util.UUID;
-import com.matosbrasil.api.domain.enums.TypeCompany;
+
+import com.matosbrasil.api.enums.TypeCompany;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,7 +29,7 @@ public class CompanyAbstract {
 	
 	@Column(name = "document")
 	private String document; // CPF ou CNPJ
-	
+
 	@Column(name = "name")
 	private String name; // Razão Social
 	

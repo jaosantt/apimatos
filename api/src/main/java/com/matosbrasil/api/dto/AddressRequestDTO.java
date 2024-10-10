@@ -1,4 +1,4 @@
-package com.matosbrasil.api.domain.address;
+package com.matosbrasil.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

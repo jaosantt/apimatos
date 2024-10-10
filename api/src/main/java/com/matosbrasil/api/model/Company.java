@@ -1,6 +1,4 @@
-package com.matosbrasil.api.domain.company;
-
-import com.matosbrasil.api.domain.address.Address;
+package com.matosbrasil.api.model;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
