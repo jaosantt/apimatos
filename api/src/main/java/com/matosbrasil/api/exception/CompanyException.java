@@ -1,4 +1,4 @@
-package com.matosbrasil.api.exceptions;
+package com.matosbrasil.api.exception;
 
 public class CompanyException extends RuntimeException {
     private static final long serialVersionUID = 1L;
