@@ -1,8 +1,7 @@
-package com.matosbrasil.api.domain.address;
+package com.matosbrasil.api.model;
 
 import java.util.Date;
 import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +22,7 @@ public class Address {
 	@Id
 	@GeneratedValue
     @Column(name = "cadendid")
-	private UUID    id;           // ID do Endereço	
+	private UUID    id;	// ID do Endereço	
 
     @Column(name = "cadendlogradouro")
     private String place; // Logradouro
