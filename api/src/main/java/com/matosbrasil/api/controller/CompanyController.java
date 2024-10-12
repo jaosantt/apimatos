@@ -42,7 +42,7 @@ public class CompanyController {
 			// Retorna um erro tratado
 			Map<String, Object> response = new HashMap<>();
 			response.put("code", ResponseCode.ERROR.getCode());
-			response.put("message", companyEx.getMessage());
+			response.put("error", companyEx.getMessage());
 			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					 			 .body(response);
@@ -50,7 +50,7 @@ public class CompanyController {
 			// Retorna um erro genérico
 			Map<String, Object> response = new HashMap<>();
 			response.put("code", ResponseCode.UNEXPECTED_ERROR.getCode());
-			response.put("message", ResponseMessage.UNEXPECTED_ERROR_MESSAGE.getMessage());
+			response.put("error", ResponseMessage.UNEXPECTED_ERROR_MESSAGE.getMessage());
 			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 								 .body(response);
