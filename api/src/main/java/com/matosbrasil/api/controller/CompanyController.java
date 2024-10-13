@@ -1,30 +1,30 @@
 package com.matosbrasil.api.controller;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.matosbrasil.api.dto.CompanyRequestDTO;
+import com.matosbrasil.api.dto.CompanyResponseDTO;
 import com.matosbrasil.api.enums.ResponseCode;
 import com.matosbrasil.api.enums.ResponseMessage;
 import com.matosbrasil.api.exception.CompanyException;
 import com.matosbrasil.api.service.CompanyService;
-import java.nio.charset.StandardCharsets;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/company")
-public class CompanyController {
+public class CompanyController extends BaseController{
 	
 	@Autowired
 	private CompanyService companyService;
@@ -35,42 +35,29 @@ public class CompanyController {
 			// Tenta criar a empresa
 			this.companyService.createCompany(body);
 			
-			// Monta a resposta
-			Map<String, Object> response = new HashMap<>();
-			response.put("code", ResponseCode.SUCCESS.getCode());
-			response.put("message", ResponseMessage.SUCCESSFUL_REGISTRATION.getMessage());
-			
-			// Define o Content-Type como application/json e charset UTF-8
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
-            return ResponseEntity.ok().headers(headers).body(response);
+			// Retorno uma resposta com sucesso
+			return createSuccessResponse(ResponseMessage.SUCCESSFUL_REGISTRATION);
 		} catch (CompanyException companyEx) { 
-			// Retorna um erro tratado
-			Map<String, Object> response = new HashMap<>();
-			response.put("code", ResponseCode.ERROR.getCode());
-			response.put("error", companyEx.getMessage());
-			
-            // Define o Content-Type para a resposta de erro
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .headers(headers)
-                                 .body(response);
-		}catch (Exception ex){
+			// Retorna uma resposta de erro tratado
+			return createErrorResponse(
+						HttpStatus.INTERNAL_SERVER_ERROR,
+						ResponseCode.ERROR.getCode(), 
+						companyEx.getMessage()
+				   );
+		} catch (Exception ex){
 			// Retorna um erro genérico
-			Map<String, Object> response = new HashMap<>();
-			response.put("code", ResponseCode.UNEXPECTED_ERROR.getCode());
-			response.put("error", ResponseMessage.UNEXPECTED_ERROR_MESSAGE.getMessage());
-			
-			// Define o Content-Type para a resposta de erro genérico
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .headers(headers)
-                                 .body(response);
+			return createErrorResponse(
+						HttpStatus.INTERNAL_SERVER_ERROR,
+						ResponseCode.ERROR.getCode(), 
+						ex.getMessage()
+				   );
 		} 
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CompanyResponseDTO>> getCompanys(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+		List<CompanyResponseDTO> allEvents = this.companyService.getCompanys(page, size);
+		return ResponseEntity.ok(allEvents);
+		 
 	}
 }

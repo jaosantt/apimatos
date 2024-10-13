@@ -11,6 +11,6 @@ public record CompanyResponseDTO(
 		String municipalRegistration,
 		String phone,
 		String email, 
-		String type,
-		AddressRequestDTO address
+		Integer type,
+		AddressResponseDTO address
 ) {}
