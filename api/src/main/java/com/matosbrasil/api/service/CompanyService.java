@@ -1,11 +1,18 @@
 package com.matosbrasil.api.service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.matosbrasil.api.dto.AddressResponseDTO;
 import com.matosbrasil.api.dto.CompanyRequestDTO;
+import com.matosbrasil.api.dto.CompanyResponseDTO;
 import com.matosbrasil.api.enums.TypeCompany;
 import com.matosbrasil.api.exception.CompanyException;
 import com.matosbrasil.api.model.Address;
@@ -22,6 +29,10 @@ public class CompanyService {
 	@Autowired
 	private AddressService addressService;
 	
+	/**
+	 * Função responsável por efetuar o cadastro de uma empresa
+	 * @param data
+	 */
 	public void createCompany(CompanyRequestDTO data) {
 		
 		try {
@@ -103,4 +114,53 @@ public class CompanyService {
 		}
 	}
 	
+	/**
+	 * Busca as empresas com paginação
+	 * @param page Número da página
+	 * @param size Tamanho da página
+	 * @return Retorna uma lista de empresas
+	 */
+	public List<CompanyResponseDTO> getCompanys(int page, int size) {	
+		// Valida o size e o page
+		if (size < 0 || page < 0) {
+			throw new CompanyException("Parâmetros de busca inválidos.");
+		}
+		
+		// Valida o valor máximo do size
+		if (size > 500) {
+			throw new CompanyException("Tamanho de busca superior ao permitido");
+		}
+		
+		// Cria o objeto de paginação
+		Pageable pageable = PageRequest.of(page,size);
+		
+		// Busca os registros no banco de dados
+		Page<Company> companyPage = this.repository.findAll(pageable);
+		
+		// Retorna um JSON com as empresas 
+	    return companyPage.stream()
+	            .map(company -> {
+	            	// Tenta construir o JSON
+	                try {
+	                    AddressResponseDTO address = addressService.getAddressById(company.getAddress().getId());
+	                    return new CompanyResponseDTO(
+	                            company.getId(),
+	                            company.getDocument(),
+	                            company.getName(),
+	                            company.getFantasyName(),
+	                            company.getStateRegistration(),
+	                            company.getMunicipalRegistration(),
+	                            company.getPhone(),
+	                            company.getEmail(),
+	                            company.getType().ordinal(),
+	                            address
+	                    );
+	                } catch (Exception e) {
+	                	// Caso ocorra algum erro salva registro como vazio
+	                    return null; 
+	                }
+	            })
+	            .filter(Objects::nonNull) // Filtra para que a lista retorne apenas registros preenchidos ou seja "NOT NULLS"
+	            .toList(); 
+	}
 }
