@@ -69,4 +69,11 @@ public class CompanyAbstract {
 	public boolean isClient() {
     	return this.getType() == TypeCompany.CLIENT;
     }
+	/**
+	 * Verifica se e uma obra
+	 * @return true se a obra for valida e false se nao for
+	 */
+	public boolean isConstruction() {
+    	return this.getType() == TypeCompany.CONSTRUCTION;
+    }
 }
