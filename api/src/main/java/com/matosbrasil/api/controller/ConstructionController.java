@@ -1,39 +1,35 @@
 package com.matosbrasil.api.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.matosbrasil.api.dto.CompanyRequestDTO;
-import com.matosbrasil.api.dto.CompanyResponseDTO;
+import com.matosbrasil.api.dto.ConstructionRequestDTO;
 import com.matosbrasil.api.enums.ResponseCode;
 import com.matosbrasil.api.enums.ResponseMessage;
 import com.matosbrasil.api.exception.CompanyException;
-import com.matosbrasil.api.service.CompanyService;
+import com.matosbrasil.api.service.ConstructionService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/company")
-public class CompanyController extends BaseController{
+@RequestMapping("/api/construction")
+public class ConstructionController extends BaseController{
 	
 	@Autowired
-	private CompanyService companyService;
+	private ConstructionService constructionService;
 	
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> create (@Valid @RequestBody CompanyRequestDTO body){
+	public ResponseEntity<Map<String, Object>> create (@Valid @RequestBody ConstructionRequestDTO body){
 		try {
 			// Tenta criar a empresa
-			this.companyService.createCompany(body);
+			this.constructionService.createConstruction(body);
 			
 			// Retorno uma resposta com sucesso
 			return createSuccessResponse(ResponseMessage.SUCCESSFUL_REGISTRATION);
@@ -52,12 +48,5 @@ public class CompanyController extends BaseController{
 						ResponseMessage.UNEXPECTED_ERROR_MESSAGE.getMessage()
 				   );
 		} 
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<CompanyResponseDTO>> getCompanys(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-		List<CompanyResponseDTO> allEvents = this.companyService.getCompanys(page, size);
-		return ResponseEntity.ok(allEvents);
-		 
 	}
 }
