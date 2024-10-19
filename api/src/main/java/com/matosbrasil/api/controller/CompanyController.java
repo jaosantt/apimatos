@@ -56,8 +56,8 @@ public class CompanyController extends BaseController{
 	
 	@GetMapping
 	public ResponseEntity<List<CompanyResponseDTO>> getCompanys(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-		List<CompanyResponseDTO> allEvents = this.companyService.getCompanys(page, size);
-		return ResponseEntity.ok(allEvents);
+		List<CompanyResponseDTO> allCompanys = this.companyService.getCompanys(page, size);
+		return ResponseEntity.ok(allCompanys);
 		 
 	}
 }

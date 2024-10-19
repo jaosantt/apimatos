@@ -1,16 +1,20 @@
 package com.matosbrasil.api.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.matosbrasil.api.dto.ConstructionRequestDTO;
+import com.matosbrasil.api.dto.ConstructionResponseDTO;
 import com.matosbrasil.api.enums.ResponseCode;
 import com.matosbrasil.api.enums.ResponseMessage;
 import com.matosbrasil.api.exception.CompanyException;
@@ -48,5 +52,13 @@ public class ConstructionController extends BaseController{
 						ResponseMessage.UNEXPECTED_ERROR_MESSAGE.getMessage()
 				   );
 		} 
+		
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<ConstructionResponseDTO>> getConstructions(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+		List<ConstructionResponseDTO> allConstructions = this.constructionService.getConstructions(page, size);
+		return ResponseEntity.ok(allConstructions);
+	
 	}
 }

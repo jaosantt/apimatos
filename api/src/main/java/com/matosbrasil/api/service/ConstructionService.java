@@ -1,11 +1,18 @@
 package com.matosbrasil.api.service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.matosbrasil.api.dto.AddressResponseDTO;
 import com.matosbrasil.api.dto.ConstructionRequestDTO;
+import com.matosbrasil.api.dto.ConstructionResponseDTO;
 import com.matosbrasil.api.enums.TypeCompany;
 import com.matosbrasil.api.exception.CompanyException;
 import com.matosbrasil.api.model.Address;
@@ -95,6 +102,56 @@ public class ConstructionService {
 		} catch (Exception ex) {
 			throw ex;
 		}
+	}
+	
+	/**
+	 * Busca as empresas com paginação
+	 * @param page Número da página
+	 * @param size Tamanho da página
+	 * @return Retorna uma lista de Obras
+	 */
+	
+	public List<ConstructionResponseDTO> getConstructions(int page, int size) {	
+		// Valida o size e o page
+		if (size < 0 || page < 0) {
+			throw new CompanyException("Parâmetros de busca inválidos.");
+		}
+		
+		// Valida o valor máximo do size
+		if (size > 500) {
+			throw new CompanyException("Tamanho de busca superior ao permitido");
+		}
+		
+		// Cria o objeto de paginação
+		Pageable pageable = PageRequest.of(page,size);
+		
+		// Busca os registros no banco de dados
+		Page<Construction> constructionPage = this.repository.findAll(pageable);
+		
+		// Retorna um JSON com as Obras 
+	    return constructionPage.stream()
+	            .map(construction -> {
+	            	// Tenta construir o JSON
+	                try {
+	                    AddressResponseDTO address = addressService.getAddressById(construction.getAddress().getId());
+	                    return new ConstructionResponseDTO(
+	                            construction.getId(),
+	                            construction.getDocument(),
+	                            construction.getName(),
+	                            construction.getFantasyName(),
+	                            construction.getStateRegistration(),
+	                            construction.getMunicipalRegistration(),
+	                            construction.getPhone(),
+	                            construction.getEmail(),
+	                            address
+	                    );
+	                } catch (Exception e) {
+	                	// Caso ocorra algum erro salva registro como vazio
+	                    return null; 
+	                }
+	            })
+	            .filter(Objects::nonNull) // Filtra para que a lista retorne apenas registros preenchidos ou seja "NOT NULLS"
+	            .toList(); 
 	}
 	
 }
