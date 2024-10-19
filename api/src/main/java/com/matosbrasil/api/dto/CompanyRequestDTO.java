@@ -1,10 +1,13 @@
 package com.matosbrasil.api.dto;
 
+import java.util.UUID;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record CompanyRequestDTO(
+		UUID id,
 		@NotBlank(message = "O Documento é obrigatório")
 		String document,
 		@NotBlank(message = "A Razão Social é obrigatória")

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,4 +61,30 @@ public class CompanyController extends BaseController{
 		return ResponseEntity.ok(allCompanys);
 		 
 	}
+	
+	@PutMapping
+	public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody CompanyRequestDTO body){
+		try {
+			// Tenta criar a empresa
+			this.companyService.updateCompany(body);
+			
+			// Retorno uma resposta com sucesso
+			return createSuccessResponse(ResponseMessage.SUCCESSFUL_UPDATED);
+		} catch (CompanyException companyEx) { 
+			// Retorna uma resposta de erro tratado
+			return createErrorResponse(
+						HttpStatus.INTERNAL_SERVER_ERROR,
+						ResponseCode.ERROR.getCode(), 
+						companyEx.getMessage()
+				   );
+		} catch (Exception ex){
+			// Retorna um erro genérico
+			return createErrorResponse(
+						HttpStatus.INTERNAL_SERVER_ERROR,
+						ResponseCode.UNEXPECTED_ERROR.getCode(), 
+						ResponseMessage.UNEXPECTED_ERROR_MESSAGE.getMessage()
+				   );
+		} 
+	}
+	
 }

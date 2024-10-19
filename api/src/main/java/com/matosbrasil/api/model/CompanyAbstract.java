@@ -1,11 +1,16 @@
 package com.matosbrasil.api.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.matosbrasil.api.enums.TypeCompany;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@EntityListeners(AuditingEntityListener.class) 
 @MappedSuperclass
 @Getter
 @Setter
@@ -48,8 +54,13 @@ public class CompanyAbstract {
 	@Column(name = "email")
 	private String email; // E-mail
 	
+	@CreatedDate
 	@Column(name = "dateCreated")
-	private Date dateCreated; // Data Cadastro
+	private LocalDateTime dateCreated; // Data Cadastro
+	
+	@LastModifiedDate
+	@Column(name = "lastModified")
+	private LocalDateTime lastModified;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type")

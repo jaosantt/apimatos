@@ -11,7 +11,8 @@ CREATE TABLE cadobra (
   cadobremail VARCHAR(150),
   cadobrtipo VARCHAR(30) NOT NULL,
   cadobrendereco UUID NOT NULL,
-  cadobrdtcadastro TIMESTAMP NOT NULL,
+  cadobrdtcadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  cadobrdtatualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_endereco FOREIGN KEY (cadobrendereco) REFERENCES cadendereco(cadendid) ON DELETE CASCADE,
   CONSTRAINT uq_cadobrdocumento_cadobrtipo UNIQUE (cadobrdocumento, cadobrtipo)
 );

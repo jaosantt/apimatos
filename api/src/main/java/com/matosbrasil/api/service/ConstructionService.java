@@ -1,6 +1,5 @@
 package com.matosbrasil.api.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -81,14 +80,8 @@ public class ConstructionService {
 			
 			// Verifica se a empresa existe
 			if (repository.existsByDocument(construction.getDocument())) {
-				Construction existingConstruction = repository.getByDocument(construction.getDocument());
-				if (existingConstruction.getType().equals(construction.getType())) {
-					throw new CompanyException("A obra informada já existe.");
-				}
+				throw new CompanyException("A obra informada já existe.");
 			}
-			
-			// Gera data de criação
-			construction.setDateCreated(new Date());
 			
 			// Preenche os dados de endereço
 			Address address = addressService.createAddress(data.address());

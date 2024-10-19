@@ -7,11 +7,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "cadempresa")
+@Table(
+		name = "cadempresa", 
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames = {"cadempdocumento", "cademptipo"})}
+		)
 @Getter
 @Setter
 @AttributeOverride(name = "id", column = @Column(name = "cadempid"))
@@ -23,6 +28,7 @@ import lombok.Setter;
 @AttributeOverride(name = "phone", column = @Column(name = "cademptelefone"))
 @AttributeOverride(name = "email", column = @Column(name = "cadempemail"))
 @AttributeOverride(name = "dateCreated", column = @Column(name = "cadempdtcadastro"))
+@AttributeOverride(name = "lastModified", column = @Column(name = "cadempdtatualizacao"))
 @AttributeOverride(name = "type", column = @Column(name = "cademptipo"))
 public class Company extends CompanyAbstract{
 	@OneToOne(cascade = CascadeType.ALL)

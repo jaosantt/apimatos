@@ -11,6 +11,7 @@ CREATE TABLE cadempresa (
   cadempemail VARCHAR(150),
   cademptipo VARCHAR(30) NOT NULL,
   cadempendereco UUID NOT NULL,
-  cadempdtcadastro TIMESTAMP NOT NULL,
+  cadempdtcadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  cadempdtatualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_endereco FOREIGN KEY (cadempendereco) REFERENCES cadendereco(cadendid) ON DELETE CASCADE
 );

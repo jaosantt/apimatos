@@ -1,8 +1,8 @@
 package com.matosbrasil.api.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -91,15 +91,9 @@ public class CompanyService {
 			}
 			
 			// Verifica se a empresa existe
-			if (repository.existsByDocument(company.getDocument())) {
-				Company existingCompany = repository.getByDocument(company.getDocument());
-				if (existingCompany.getType().equals(company.getType())) {
-					throw new CompanyException("A empresa informada já existe.");
-				}
+			if (repository.existsByDocumentAndType(company.getDocument(), company.getType())) {
+				throw new CompanyException("A empresa informada já existe.");
 			}
-			
-			// Gera data de criação
-			company.setDateCreated(new Date());
 			
 			// Preenche os dados de endereço
 			Address address = addressService.createAddress(data.address());
@@ -162,5 +156,80 @@ public class CompanyService {
 	            })
 	            .filter(Objects::nonNull) // Filtra para que a lista retorne apenas registros preenchidos ou seja "NOT NULLS"
 	            .toList(); 
+	}
+	
+	
+	/**
+	 * Função responsável por realizar alterações na empresa
+	 * @param data
+	 */
+	public void updateCompany(CompanyRequestDTO data) {	
+		try {
+			// Busca uma empresa
+			Optional<Company> searchCompany = repository.findById(data.id());
+			
+			// Validar se a empresa existe no banco
+			if (!searchCompany.isPresent()) {
+				throw new CompanyException("A empresa informada não existe.");
+			}
+			
+			// Armazena o objeto empresa
+			Company company = searchCompany.get();
+			
+			// Valida se o documento foi alterado
+			if (company.getDocument().equals(data.document())) {
+				throw new CompanyException("Não é permitido alterar o CPF/CNPJ do cadastro.");
+			}
+			
+			// Seta os demais campos
+			company.setName(FormatUtil.removeSpecialCharacters(data.name()));
+			company.setFantasyName(FormatUtil.removeSpecialCharacters(data.fantasyName()));
+			
+			// Valida se a inscrição estadual é vazia ou nula, caso não seja verifica se é um número válido
+			if(
+				!ValidatorUtil.isEmptyOrNullOrBlank(FormatUtil.formatNumber(data.stateRegistration())) && 
+				!ValidatorUtil.isNumeric(FormatUtil.formatNumber(data.stateRegistration()))
+			){
+				throw new CompanyException("A Inscrição Estadual não é válida");
+			}
+			company.setStateRegistration(FormatUtil.formatNumber(data.stateRegistration()));
+			
+			// Valida se a inscrição muncipal só contém números
+			if(
+				!ValidatorUtil.isEmptyOrNullOrBlank(FormatUtil.formatNumber(data.municipalRegistration())) && 
+				!ValidatorUtil.isNumeric(FormatUtil.formatNumber(data.municipalRegistration()))
+			) {
+				throw new CompanyException("A Inscrição Municipal não é válida");
+			}
+			company.setMunicipalRegistration(FormatUtil.formatNumber(data.municipalRegistration()));
+			
+			// Valida se o telefone só contém números
+			if(
+				!ValidatorUtil.isEmptyOrNullOrBlank(FormatUtil.formatNumber(data.phone())) &&
+				!ValidatorUtil.isNumeric(FormatUtil.formatNumber(data.phone()))
+			) {
+				throw new CompanyException("O número de telefone é inválido");
+			}
+			company.setPhone(FormatUtil.formatNumber(data.phone()));
+
+			// Seta o e-mail
+			company.setEmail(!ValidatorUtil.isEmptyOrNullOrBlank(data.email()) ? data.email() : null);
+			
+			// Valida se o tipo da empresa foi alterado
+			if (!TypeCompany.toTypeCompany(data.type()).equals(company.getType())) {
+				throw new CompanyException("O tipo da empresa não pode ser alterado");
+			}
+			
+			// Preenche os dados de endereço
+			Address address = addressService.createAddress(data.address());
+			company.setAddress(address);
+			
+			// Salva no banco de dados
+			repository.save(company);
+		} catch (CompanyException companyEx) {
+			throw companyEx;
+		} catch (Exception ex) {
+			throw ex;
+		}
 	}
 }
